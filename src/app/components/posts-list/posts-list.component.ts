@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth/auth.service';
 import {Router} from '@angular/router';
+import {PostService} from '../../services/post/post.service';
 
 @Component({
   selector: 'app-posts-list',
@@ -10,7 +11,11 @@ import {Router} from '@angular/router';
 export class PostsListComponent implements OnInit {
   // loading: boolean;
 
-  constructor(private auth: AuthService, private router: Router) {
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private postService: PostService
+  ) {
   }
 
   ngOnInit() {

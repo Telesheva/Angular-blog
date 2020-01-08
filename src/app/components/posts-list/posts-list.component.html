@@ -6,13 +6,9 @@
   </div>
 </div>
 <ul class="post__list">
-  <li class="post__list__item">
-    <h3>Post Title1</h3>
-    <p class="post__list__item__description">Post description1 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam asperiores assumenda commodi corporis culpa deserunt, dolore harum impedit inventore nesciunt odio perspiciatis placeat quaerat quam ratione similique, sunt veritatis vero.Autem delectus dicta explicabo repudiandae. A dolorem est facilis inventore laudantium non possimus quasi quod, quos totam. Debitis, est expedita illo in laborum necessitatibus perferendis praesentium reiciendis repellat sapiente ut?Ad adipisci atque consequuntur ea explicabo hic id in iure natus nihil optio perspiciatis quasi quibusdam repellat repudiandae tempore unde, velit veritatis. Asperiores dolore laudantium necessitatibus perferendis velit? Quo, ullam. A, adipisci corporis cum eligendi impedit incidunt ipsa labore odit possimus quasi? Aliquam animi architecto delectus doloremque ea eius, esse ipsa odit officia provident quasi quisquam quod recusandae soluta voluptas?Doloremque doloribus, praesentium quam repudiandae saepe sequi sint tempore. Aliquam cupiditate debitis esse eveniet facere facilis fuga hic laborum minus nisi numquam, possimus quasi quidem quo reprehenderit rerum sint totam!Ad amet asperiores corporis dolorem dolorum id illum nesciunt quas, quibusdam totam velit voluptates! Aliquam asperiores aspernatur commodi consequatur, delectus ducimus expedita fuga fugit, modi officia quaerat, quia sapiente veniam? Deserunt dicta magni molestiae porro rem? Ab aut exercitationem fuga impedit ipsa nam nemo nostrum quos tempore unde. Alias cupiditate dolorum eveniet magni nam odio, officiis ratione velit! Provident, quam. Amet aspernatur atque aut blanditiis commodi consectetur dolor dolores ducimus eligendi enim eum, facere fugiat fugit impedit ipsum, laborum minima odio odit omnis perferendis reprehenderit saepe suscipit vel veritatis voluptatibus? At fugit, praesentium? Asperiores blanditiis culpa cum cumque debitis ea, earum esse et facilis fuga impedit ipsam iste laborum minus molestiae nulla quaerat quam qui quis quo reprehenderit temporibus vero!Aspernatur consequuntur delectus doloremque eos minima, odit officia provident quod reiciendis, repellendus saepe, sed sequi totam! Animi atque corporis doloribus, eaque eos, eveniet exercitationem fugiat, id itaque nemo quisquam suscipit.</p>
+  <li class="post__list__item" *ngFor="let post of postService.getAllPosts()">
+    <h3>{{ post.title }}</h3>
+    <p class="post__list__item__description">{{ post.description }}</p>
     <app-button label="View post" [primary]="true" type="button" (Click)="router.navigate(['/post'])"></app-button>
-  </li>
-  <li class="post__list__item">
-    <h3>Post Title2</h3>
-    <p class="post__list__item__description">Post description2</p>
   </li>
 </ul>

@@ -14,7 +14,7 @@
       <textarea formControlName="description" type="text" class="form__input" placeholder="Enter post's description" rows="4"></textarea>
     </div>
     <div class="form__action">
-    <app-button label="Add post" [primary]="true" type="submit" [disabled]="form.invalid" *ngIf="this.isAddPost"></app-button>
+    <app-button label="Add post" [primary]="true" type="submit" [disabled]="form.invalid" *ngIf="this.isAddPost" (Click)="onAddPostBtnClick(form)"></app-button>
     <app-button label="Save changes" [success]="true" type="submit" [disabled]="form.invalid" *ngIf="!this.isAddPost"></app-button>
     </div>
   </form>
