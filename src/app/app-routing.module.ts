@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: 'posts', component: PostsListComponent},
   {path: 'post', component: PostComponent},
   {path: 'posts/add', component: PostFormComponent},
-  {path: '', component: PostsListComponent, pathMatch: 'full'},
+  {path: '', component: AuthComponent, pathMatch: 'full'},
   { path: '**', component: PageNotFoundComponent }
 ];
 

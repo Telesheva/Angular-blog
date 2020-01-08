@@ -71,7 +71,6 @@ export class AuthService {
     this.getUsers();
     if (!this.users.includes(userCredential.user)) {
       return this.db.doc(`/users/${userCredential.user.uid}`).set({
-        name: this.curUser.name,
         email: this.curUser.email,
         role: this.curUser.email === 'admin@gmail.com' ? 'admin' : 'user'
       });

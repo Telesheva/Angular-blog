@@ -6,13 +6,6 @@
         <p style="color: orangered">{{ authError?.message }}</p>
       </div>
       <div class="form__control">
-        <div class="form__control__validation" *ngIf="form.get('name').invalid && form.get('name').touched">
-          <p *ngIf="form.get('name').errors.required">Name can not be empty!</p>
-        </div>
-        <input type="text" class="form__input" placeholder="Enter your name" formControlName="name"
-               autocomplete="current-name">
-      </div>
-      <div class="form__control">
         <div class="form__control__validation" *ngIf="form.get('email').invalid && form.get('email').touched">
           <p *ngIf="form.get('email').errors.required">Email can not be empty!</p>
           <p *ngIf="form.get('email').errors.email">Enter a valid email!</p>

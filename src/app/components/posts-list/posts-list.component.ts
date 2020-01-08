@@ -1,4 +1,4 @@
-import {Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth/auth.service';
 import {Router} from '@angular/router';
 
@@ -8,15 +8,12 @@ import {Router} from '@angular/router';
   styleUrls: ['./posts-list.component.scss']
 })
 export class PostsListComponent implements OnInit {
+  // loading: boolean;
 
   constructor(private auth: AuthService, private router: Router) {
-    if (!auth.curUser) {
-      this.router.navigate(['/auth']);
-    }
   }
 
   ngOnInit() {
-    console.log(localStorage);
   }
 
   onLogOutBtnClick() {

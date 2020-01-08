@@ -1,5 +1,5 @@
 <div class="post__headline">
-  <h1 style="color: #ffffff">Hello, {{ auth.curUser.name }}!</h1>
+  <h1 style="color: #ffffff">Hello! Check out new posts!</h1>
   <div class="post__headline__btns">
       <app-button label="Add Post" [light]="true" type="button" (Click)="router.navigate(['/posts/add'])"></app-button>
       <app-button label="Log out" [light]="true" type="button" (Click)="onLogOutBtnClick()"></app-button>

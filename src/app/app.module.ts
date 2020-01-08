@@ -17,6 +17,7 @@ import { PostsListComponent } from './components/posts-list/posts-list.component
 import { PostFormComponent } from './components/post-form/post-form.component';
 import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
 import {PostComponent} from './components/post/post.component';
+import { LoaderComponent } from './components/UI/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {PostComponent} from './components/post/post.component';
     PostsListComponent,
     PostFormComponent,
     PageNotFoundComponent,
-    PostComponent
+    PostComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

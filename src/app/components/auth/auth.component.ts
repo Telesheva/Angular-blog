@@ -17,8 +17,7 @@ export class AuthComponent implements OnInit {
   ngOnInit(): void {
     this.form = new FormGroup({
       email: new FormControl('', [Validators.email, Validators.required]),
-      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-      name: new FormControl('', [Validators.required])
+      password: new FormControl('', [Validators.required, Validators.minLength(8)])
     });
     this.auth.eventAuthError$.subscribe(data => {
       this.authError = data;
