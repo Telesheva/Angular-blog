@@ -16,6 +16,7 @@ import {environment} from '../environments/environment';
 import { PostsListComponent } from './components/posts-list/posts-list.component';
 import { PostFormComponent } from './components/post-form/post-form.component';
 import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
+import {PostComponent} from './components/post/post.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {PageNotFoundComponent} from './components/page-not-found/page-not-found.
     ButtonComponent,
     PostsListComponent,
     PostFormComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,
