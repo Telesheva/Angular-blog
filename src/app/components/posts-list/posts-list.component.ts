@@ -16,6 +16,7 @@ export class PostsListComponent implements OnInit {
     private router: Router,
     private postService: PostService
   ) {
+    this.postService.fetchAllPosts();
   }
 
   ngOnInit() {
@@ -25,5 +26,10 @@ export class PostsListComponent implements OnInit {
     this.router.navigate(['/auth']);
     localStorage.removeItem('email');
     localStorage.removeItem('users');
+  }
+
+  onViewPostBtnClick(id) {
+    this.router.navigate(['/post']);
+    this.postService.fetchOnePost(id);
   }
 }

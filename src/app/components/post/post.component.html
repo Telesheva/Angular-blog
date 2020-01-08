@@ -1,8 +1,8 @@
 <div class="post-overview">
   <a routerLink="/posts" class="post-overview__link">Back to list</a>
   <div class="post-overview__content">
-    <h2>Title</h2>
-    <p class="post-overview__content__desc">Description</p>
+    <h2>{{ postService.post ? postService.post.title : ''}}</h2>
+    <p class="post-overview__content__desc">{{ postService.post ? postService.post.description : '' }}</p>
     <app-button label="Edit Post" [success]="true" type="button"></app-button>
   </div>
 </div>

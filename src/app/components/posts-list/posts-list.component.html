@@ -6,9 +6,9 @@
   </div>
 </div>
 <ul class="post__list">
-  <li class="post__list__item" *ngFor="let post of postService.getAllPosts()">
+  <li class="post__list__item" *ngFor="let post of postService.posts">
     <h3>{{ post.title }}</h3>
     <p class="post__list__item__description">{{ post.description }}</p>
-    <app-button label="View post" [primary]="true" type="button" (Click)="router.navigate(['/post'])"></app-button>
+    <app-button label="View post" [primary]="true" type="button" (Click)="onViewPostBtnClick(post.id)"></app-button>
   </li>
 </ul>
