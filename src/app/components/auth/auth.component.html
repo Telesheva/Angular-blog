@@ -1,0 +1,38 @@
+<div class="container">
+  <h1 style="color: white">Log in or sign up, please!</h1>
+  <div class="form-block">
+    <form [formGroup]="form" class="form" (ngSubmit)="isLogIn ? loginUser(form) : createUser(form)">
+      <div>
+        <p style="color: orangered">{{ authError?.message }}</p>
+      </div>
+      <div class="form__control">
+        <div class="form__control__validation" *ngIf="form.get('name').invalid && form.get('name').touched">
+          <p *ngIf="form.get('name').errors.required">Name can not be empty!</p>
+        </div>
+        <input type="text" class="form__input" placeholder="Enter your name" formControlName="name"
+               autocomplete="current-name">
+      </div>
+      <div class="form__control">
+        <div class="form__control__validation" *ngIf="form.get('email').invalid && form.get('email').touched">
+          <p *ngIf="form.get('email').errors.required">Email can not be empty!</p>
+          <p *ngIf="form.get('email').errors.email">Enter a valid email!</p>
+        </div>
+        <input type="email" class="form__input" placeholder="Enter your email" formControlName="email"
+               autocomplete="current-email">
+      </div>
+      <div class="form__control">
+        <div class="form__control__validation" *ngIf="form.get('password').invalid && form.get('password').touched">
+          <p *ngIf="form.get('password').errors.required">Password can not be empty!</p>
+          <p *ngIf="form.get('password').errors.minlength">The length must be at least {{ form.get('password').errors.minlength.requiredLength }}. Current Length - {{ form.get('password').errors.minlength.actualLength }}</p>
+        </div>
+        <input type="password" class="form__input" placeholder="Enter your password" formControlName="password"
+               autocomplete="current-password">
+      </div>
+      <div class="form__action">
+        <app-button label="Log in" [primary]="true" type="submit" [disabled]="form.invalid" (click)="isLogIn = true"></app-button>
+        <app-button label="Sign up" [success]="true" type="submit" [disabled]="form.invalid"></app-button>
+      </div>
+    </form>
+  </div>
+</div>
+<router-outlet></router-outlet>

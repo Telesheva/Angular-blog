@@ -1,0 +1,45 @@
+.post {
+  &__headline {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8%;
+    &__btns {
+      display: flex;
+      align-items: center;
+      app-button {
+        margin-left: 15px;
+      }
+    }
+  }
+  &__list {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__item {
+      width: 90%;
+      list-style: none;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      padding: 20px;
+      margin-bottom: 20px;
+      &__description {
+        white-space: nowrap;
+        width: 80em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.visible {
+  display: block;
+}

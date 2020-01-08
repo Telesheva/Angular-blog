@@ -1,0 +1,42 @@
+.btn {
+  text-transform: uppercase;
+  font-weight: bold;
+  border: 1px solid #0000;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  &:hover {
+    cursor: pointer;
+  }
+  &:disabled {
+    background-color: gray;
+    border-color: gray;
+  }
+}
+.primary {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+.success {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+}
+.danger {
+  color: #fff;
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+.light {
+  color: #212529;
+  background-color: #f8f9fa;
+  border-color: #f8f9fa;
+  &:hover {
+    color: #212529;
+    background-color: #e2e6ea;
+    border-color: #dae0e5;
+  }
+}
