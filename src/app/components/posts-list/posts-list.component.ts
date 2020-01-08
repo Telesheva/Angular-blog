@@ -1,4 +1,4 @@
-import {Component, OnInit, Output} from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import {AuthService} from '../../services/auth/auth.service';
 import {Router} from '@angular/router';
 
@@ -10,19 +10,18 @@ import {Router} from '@angular/router';
 export class PostsListComponent implements OnInit {
 
   constructor(private auth: AuthService, private router: Router) {
- /*   if (!auth.curUser) {
+    if (!auth.curUser) {
       this.router.navigate(['/auth']);
-    }*/
+    }
   }
 
   ngOnInit() {
-  }
-
-  onAddBtnClick() {
-    this.router.navigate(['/posts/add']);
+    console.log(localStorage);
   }
 
   onLogOutBtnClick() {
     this.router.navigate(['/auth']);
+    localStorage.removeItem('email');
+    localStorage.removeItem('users');
   }
 }

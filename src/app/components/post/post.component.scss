@@ -1,0 +1,28 @@
+.post-overview {
+  &__link {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 10px;
+    &:hover {
+      text-decoration: none;
+      opacity: .8;
+    }
+  }
+  &__content {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 20px 0 40px 0;
+    margin: 35px 0 0 195px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    &__desc {
+      font-size: 22px;
+    }
+  }
+}
+

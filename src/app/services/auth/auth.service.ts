@@ -37,9 +37,12 @@ export class AuthService {
   }
 
   loginUser(user) {
+    this.getUsers();
     this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password)
       .then(() => {
         this.curUser = user;
+        localStorage.setItem('email', user.email);
+        localStorage.setItem('users', JSON.stringify(this.users));
         this.router.navigate(['/posts']);
       })
     .catch(error => {
@@ -51,12 +54,11 @@ export class AuthService {
     this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password)
       .then(userCredential => {
         this.curUser = user;
-        userCredential.user.updateProfile({
-          displayName: user.name
-        });
+        localStorage.setItem('email', user.email);
 
         this.insertUserData(userCredential)
           .then(() => {
+            localStorage.setItem('users', JSON.stringify(this.users));
             this.router.navigate(['/posts']);
           });
       })
@@ -73,6 +75,12 @@ export class AuthService {
         email: this.curUser.email,
         role: this.curUser.email === 'admin@gmail.com' ? 'admin' : 'user'
       });
+    }
+  }
+
+  autoLogIn(user) {
+    if (user) {
+      this.curUser = user;
     }
   }
 }
