@@ -4,18 +4,18 @@
       <div class="form__control__validation" *ngIf="form.get('title').invalid && form.get('title').touched">
         <p *ngIf="form.get('title').errors.required">Name can not be empty!</p>
       </div>
-      <input type="text" class="form__input" placeholder="Enter post's title" formControlName="title"
+      <input type="text" class="form__input" placeholder="Enter post's title" formControlName="title" [ngModel]="title"
              autocomplete="current-title">
     </div>
     <div class="form__control">
       <div class="form__control__validation" *ngIf="form.get('description').invalid && form.get('description').touched">
         <p *ngIf="form.get('description').errors.required">Name can not be empty!</p>
       </div>
-      <textarea formControlName="description" type="text" class="form__input" placeholder="Enter post's description" rows="4"></textarea>
+      <textarea formControlName="description" type="text" class="form__input" [ngModel]="description" placeholder="Enter post's description" rows="4"></textarea>
     </div>
     <div class="form__action">
     <app-button label="Add post" [primary]="true" type="submit" [disabled]="form.invalid" *ngIf="this.isAddPost" (Click)="onAddPostBtnClick(form)"></app-button>
-    <app-button label="Save changes" [success]="true" type="submit" [disabled]="form.invalid" *ngIf="!this.isAddPost"></app-button>
+    <app-button label="Save changes" [success]="true" type="submit" [disabled]="form.invalid" *ngIf="!this.isAddPost" (Click)="onSaveBtnClick(form)"></app-button>
     </div>
   </form>
 </div>

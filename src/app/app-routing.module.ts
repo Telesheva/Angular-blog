@@ -9,8 +9,9 @@ import {PostComponent} from './components/post/post.component';
 const routes: Routes = [
   {path: 'auth', component: AuthComponent},
   {path: 'posts', component: PostsListComponent},
-  {path: 'post', component: PostComponent},
+  {path: 'post/:id', component: PostComponent},
   {path: 'posts/add', component: PostFormComponent},
+  {path: 'posts/edit/:id', component: PostFormComponent},
   {path: '', component: AuthComponent, pathMatch: 'full'},
   { path: '**', component: PageNotFoundComponent }
 ];

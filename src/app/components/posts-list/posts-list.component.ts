@@ -10,7 +10,6 @@ import {PostInterface} from '../../interfaces/post.interface';
   styleUrls: ['./posts-list.component.scss']
 })
 export class PostsListComponent implements OnInit, OnDestroy {
-  // loading: boolean;
   posts: PostInterface[];
   private postsSubscription;
 
@@ -36,8 +35,8 @@ export class PostsListComponent implements OnInit, OnDestroy {
     localStorage.removeItem('users');
   }
 
-  onViewPostBtnClick(id) {
-    this.router.navigate(['/post']);
+  onViewPostBtnClick(id: string) {
+    this.router.navigate([`/post/${id}`]);
     this.postService.fetchOnePost(id);
   }
 }

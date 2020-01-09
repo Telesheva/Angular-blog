@@ -3,6 +3,6 @@
   <div class="post-overview__content">
     <h2>{{ postService.post ? postService.post.title : ''}}</h2>
     <p class="post-overview__content__desc">{{ postService.post ? postService.post.description : '' }}</p>
-    <app-button label="Edit Post" [success]="true" type="button"></app-button>
+    <app-button *ngIf="isAdmin" label="Edit Post" [success]="true" type="button" (Click)="onEditPostBtnClick()"></app-button>
   </div>
 </div>

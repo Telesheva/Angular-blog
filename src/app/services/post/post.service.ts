@@ -5,8 +5,6 @@ import {PostInterface} from '../../interfaces/post.interface';
 import uuidv1 from 'uuid/v1';
 import {BehaviorSubject} from 'rxjs';
 
-// import {BehaviorSubject} from 'rxjs';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -39,7 +37,7 @@ export class PostService {
     return this.posts;
   }
 
-  fetchOnePost(id) {
+  fetchOnePost(id: string) {
     this.db.collection('posts')
       .get().forEach(querySnap => {
       querySnap.forEach(doc => {
@@ -49,6 +47,7 @@ export class PostService {
             title: doc.data().title,
             description: doc.data().description
           };
+          localStorage.setItem('post', JSON.stringify(this.post));
           return this.post;
         }
       });
@@ -57,7 +56,7 @@ export class PostService {
     });
   }
 
-  add(post): void {
+  add(post: PostInterface): void {
     const ID = uuidv1();
     this.db.doc(`/posts/${ID}`).set({
       id: ID,
@@ -68,6 +67,21 @@ export class PostService {
       this.posts$.next(this.posts);
       window.alert('New post was successfully added!');
       this.router.navigate(['/posts']);
+    })
+      .catch(error => {
+        window.alert(error);
+      });
+  }
+
+  editPost(post: PostInterface, id: string): void {
+    this.db.doc(`/posts/${id}`).update({
+      id,
+      title: post.title,
+      description: post.description
+    }).then(() => {
+      this.router.navigate(['/posts']);
+      this.posts$.next(this.posts);
+      localStorage.removeItem('post');
     })
       .catch(error => {
         window.alert(error);
