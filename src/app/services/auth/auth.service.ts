@@ -19,12 +19,11 @@ export class AuthService {
   constructor(
     private afAuth: AngularFireAuth,
     private db: AngularFirestore,
-    private router: Router) {
-  }
+    private router: Router) {}
 
   getUsers() {
     this.db.collection('users')
-    .get().forEach(querySnap => {
+      .get().forEach(querySnap => {
       querySnap.forEach(doc => {
         if (doc.exists) {
           this.users.push(doc.data());
@@ -38,16 +37,20 @@ export class AuthService {
 
   loginUser(user) {
     this.getUsers();
+    const newUser = {
+      email: user.email,
+      role: user.email === 'admin@gmail.com' ? 'admin' : 'user'
+    };
     this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password)
       .then(() => {
-        this.curUser = user;
+        this.curUser = newUser;
         localStorage.setItem('email', user.email);
         localStorage.setItem('users', JSON.stringify(this.users));
         this.router.navigate(['/posts']);
       })
-    .catch(error => {
-      this.eventAuthError.next(error);
-    });
+      .catch(error => {
+        this.eventAuthError.next(error);
+      });
   }
 
   createUser(user) {

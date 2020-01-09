@@ -13,7 +13,7 @@ export class AuthComponent implements OnInit, OnDestroy {
   authError: any;
   private eventAuthErrorSubscription;
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({

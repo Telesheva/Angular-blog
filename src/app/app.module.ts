@@ -39,7 +39,7 @@ import { LoaderComponent } from './components/UI/loader/loader.component';
     AngularFireAuthModule,
     AngularFirestoreModule
   ],
-  providers: [PostsListComponent, PostFormComponent, PostComponent],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

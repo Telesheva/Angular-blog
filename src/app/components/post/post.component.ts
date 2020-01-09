@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {PostService} from '../../services/post/post.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../services/auth/auth.service';
@@ -10,15 +10,14 @@ import {AuthService} from '../../services/auth/auth.service';
 })
 export class PostComponent implements OnInit {
   id: string;
-  isAdmin = this.authService.curUser.role === 'admin';
+  isAdmin = this.auth.curUser.role === 'admin';
 
   constructor(
     private postService: PostService,
-    private authService: AuthService,
+    private auth: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth/auth.service';
 import {Router} from '@angular/router';
 import {PostService} from '../../services/post/post.service';
@@ -9,6 +9,7 @@ import {PostInterface} from '../../interfaces/post.interface';
   templateUrl: './posts-list.component.html',
   styleUrls: ['./posts-list.component.scss']
 })
+
 export class PostsListComponent implements OnInit, OnDestroy {
   posts: PostInterface[];
   private postsSubscription;
@@ -17,7 +18,9 @@ export class PostsListComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private router: Router,
     private postService: PostService
-  ) {}
+  ) {
+    localStorage.removeItem('post');
+  }
 
   ngOnInit() {
     this.postsSubscription = this.postService.posts$.subscribe((posts: PostInterface[]) => {

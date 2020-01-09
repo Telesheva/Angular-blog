@@ -58,12 +58,13 @@ export class PostService {
 
   add(post: PostInterface): void {
     const ID = uuidv1();
-    this.db.doc(`/posts/${ID}`).set({
+    const newPost = {
       id: ID,
       title: post.title,
       description: post.description
-    }).then(() => {
-      this.posts.push(post);
+    };
+    this.db.doc(`/posts/${ID}`).set(newPost).then(() => {
+      this.posts.push(newPost);
       this.posts$.next(this.posts);
       window.alert('New post was successfully added!');
       this.router.navigate(['/posts']);
@@ -74,13 +75,17 @@ export class PostService {
   }
 
   editPost(post: PostInterface, id: string): void {
-    this.db.doc(`/posts/${id}`).update({
+    const newPost = {
       id,
       title: post.title,
       description: post.description
-    }).then(() => {
-      this.router.navigate(['/posts']);
+    };
+    this.db.doc(`/posts/${id}`).update(newPost).then(() => {
+      const oldPost = JSON.parse(localStorage.getItem('post'));
+      const oldPostIndex = this.posts.findIndex(el => el.id === oldPost.id);
+      this.posts.splice(oldPostIndex, 1, newPost);
       this.posts$.next(this.posts);
+      this.router.navigate(['/posts']);
       localStorage.removeItem('post');
     })
       .catch(error => {

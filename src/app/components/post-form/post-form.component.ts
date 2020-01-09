@@ -12,27 +12,24 @@ import {PostService} from '../../services/post/post.service';
 export class PostFormComponent implements OnInit {
   form: FormGroup;
   isAddPost = this.router.url === '/posts/add';
-  title: string;
-  description: string;
 
   constructor(
     private auth: AuthService,
     private router: Router,
     private  postService: PostService,
     private route: ActivatedRoute
-  ) {
-    const post = JSON.parse(localStorage.getItem('post'));
-    if (!this.isAddPost) {
-      this.title = post.title;
-      this.description = post.description;
-    }
-  }
+  ) {}
 
   ngOnInit() {
     this.form = new FormGroup({
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required])
     });
+    const post = JSON.parse(localStorage.getItem('post'));
+    if (!this.isAddPost) {
+      this.form.controls.title.setValue(post.title);
+      this.form.controls.description.setValue(post.description);
+    }
   }
 
   onAddPostBtnClick(form: FormGroup) {
