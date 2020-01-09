@@ -3,6 +3,7 @@ import {AngularFirestore} from '@angular/fire/firestore';
 import {Router} from '@angular/router';
 import {PostInterface} from '../../interfaces/post.interface';
 import uuidv1 from 'uuid/v1';
+import {BehaviorSubject} from 'rxjs';
 
 // import {BehaviorSubject} from 'rxjs';
 
@@ -10,15 +11,16 @@ import uuidv1 from 'uuid/v1';
   providedIn: 'root'
 })
 export class PostService {
-  posts = [];
-  // posts$: BehaviorSubject<PostService[]> = new BehaviorSubject(this.posts);
+  postsArr = [];
+  posts: PostInterface[];
+  posts$: BehaviorSubject<PostInterface[]> = new BehaviorSubject(this.posts);
   post: PostInterface;
-  postReceivedById: PostInterface;
 
   constructor(
     private db: AngularFirestore,
     private router: Router
   ) {
+    this.fetchAllPosts();
   }
 
   fetchAllPosts() {
@@ -26,7 +28,9 @@ export class PostService {
       .get().forEach(querySnap => {
       querySnap.forEach(doc => {
         if (doc.exists) {
-          this.posts.push(doc.data());
+          this.postsArr.push(doc.data());
+          this.posts = this.postsArr;
+          this.posts$.next(this.posts);
         }
       });
     }).catch(error => {
@@ -45,7 +49,6 @@ export class PostService {
             title: doc.data().title,
             description: doc.data().description
           };
-          console.log(this.post);
           return this.post;
         }
       });
@@ -61,8 +64,9 @@ export class PostService {
       title: post.title,
       description: post.description
     }).then(() => {
+      this.posts.push(post);
+      this.posts$.next(this.posts);
       window.alert('New post was successfully added!');
-      this.fetchAllPosts();
       this.router.navigate(['/posts']);
     })
       .catch(error => {
