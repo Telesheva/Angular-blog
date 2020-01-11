@@ -1,4 +1,4 @@
-<div class="post-overview">
+<div class="post-overview" *ngIf="!loading">
   <a routerLink="/posts" class="post-overview__link">Back to list</a>
   <div class="post-overview__content">
     <h2>{{ postService.post ? postService.post.title : ''}}</h2>
@@ -6,3 +6,4 @@
     <app-button *ngIf="isAdmin" label="Edit Post" [success]="true" type="button" (Click)="onEditPostBtnClick()"></app-button>
   </div>
 </div>
+<app-loader *ngIf="loading"></app-loader>

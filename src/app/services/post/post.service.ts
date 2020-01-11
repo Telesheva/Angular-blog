@@ -4,40 +4,43 @@ import {Router} from '@angular/router';
 import {PostInterface} from '../../interfaces/post.interface';
 import uuidv1 from 'uuid/v1';
 import {BehaviorSubject} from 'rxjs';
+import {IsLoadingService} from '../isLoading/is-loading.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
-  postsArr = [];
+  // postsArr = [];
   posts: PostInterface[];
-  posts$: BehaviorSubject<PostInterface[]> = new BehaviorSubject(this.posts);
   post: PostInterface;
+  posts$: BehaviorSubject<PostInterface[]> = new BehaviorSubject(this.posts);
+  post$: BehaviorSubject<PostInterface> = new BehaviorSubject(this.post);
 
   constructor(
     private db: AngularFirestore,
-    private router: Router
-  ) {
-    this.fetchAllPosts();
-  }
+    private router: Router,
+    private isLoadingService: IsLoadingService
+  ) {}
 
   fetchAllPosts() {
-    this.db.collection('posts')
-      .get().forEach(querySnap => {
+    const newPosts = [];
+    this.isLoadingService.add();
+    this.db.collection('posts').get().forEach(querySnap => {
       querySnap.forEach(doc => {
         if (doc.exists) {
-          this.postsArr.push(doc.data());
-          this.posts = this.postsArr;
+          newPosts.push(doc.data());
+          this.posts = newPosts;
           this.posts$.next(this.posts);
-        }
-      });
+          this.isLoadingService.remove();
+        }});
     }).catch(error => {
-      console.log(error);
+      window.alert(error);
     });
     return this.posts;
   }
 
   fetchOnePost(id: string) {
+    this.isLoadingService.add();
     this.db.collection('posts')
       .get().forEach(querySnap => {
       querySnap.forEach(doc => {
@@ -47,7 +50,8 @@ export class PostService {
             title: doc.data().title,
             description: doc.data().description
           };
-          localStorage.setItem('post', JSON.stringify(this.post));
+          this.post$.next(this.post);
+          this.isLoadingService.remove();
           return this.post;
         }
       });
@@ -56,7 +60,7 @@ export class PostService {
     });
   }
 
-  add(post: PostInterface): void {
+  addPost(post: PostInterface): void {
     const ID = uuidv1();
     const newPost = {
       id: ID,
@@ -66,7 +70,6 @@ export class PostService {
     this.db.doc(`/posts/${ID}`).set(newPost).then(() => {
       this.posts.push(newPost);
       this.posts$.next(this.posts);
-      window.alert('New post was successfully added!');
       this.router.navigate(['/posts']);
     })
       .catch(error => {
@@ -75,18 +78,11 @@ export class PostService {
   }
 
   editPost(post: PostInterface, id: string): void {
-    const newPost = {
-      id,
-      title: post.title,
-      description: post.description
-    };
-    this.db.doc(`/posts/${id}`).update(newPost).then(() => {
-      const oldPost = JSON.parse(localStorage.getItem('post'));
-      const oldPostIndex = this.posts.findIndex(el => el.id === oldPost.id);
-      this.posts.splice(oldPostIndex, 1, newPost);
+    this.db.doc(`/posts/${id}`).update(post).then(() => {
+      const oldPostIndex = this.posts.findIndex(el => el.id === id);
+      this.posts.splice(oldPostIndex, 1, post);
       this.posts$.next(this.posts);
       this.router.navigate(['/posts']);
-      localStorage.removeItem('post');
     })
       .catch(error => {
         window.alert(error);

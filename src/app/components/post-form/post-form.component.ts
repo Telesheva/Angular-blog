@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -25,15 +25,14 @@ export class PostFormComponent implements OnInit {
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required])
     });
-    const post = JSON.parse(localStorage.getItem('post'));
     if (!this.isAddPost) {
-      this.form.controls.title.setValue(post.title);
-      this.form.controls.description.setValue(post.description);
+      this.form.controls.title.setValue(this.postService.post.title);
+      this.form.controls.description.setValue(this.postService.post.description);
     }
   }
 
   onAddPostBtnClick(form: FormGroup) {
-    this.postService.add(form.value);
+    this.postService.addPost(form.value);
   }
 
   onSaveBtnClick(form: FormGroup) {

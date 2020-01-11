@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import {BehaviorSubject} from 'rxjs';
 import * as firebase from 'firebase';
 import {UserInterface} from '../../interfaces/user.interface';
+import {IsLoadingService} from '../isLoading/is-loading.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class AuthService {
   constructor(
     private afAuth: AngularFireAuth,
     private db: AngularFirestore,
+    private isLoadingService: IsLoadingService,
     private router: Router) {}
 
   getUsers() {
@@ -37,6 +39,7 @@ export class AuthService {
 
   loginUser(user) {
     this.getUsers();
+    this.isLoadingService.add();
     const newUser = {
       email: user.email,
       role: user.email === 'admin@gmail.com' ? 'admin' : 'user'
@@ -46,6 +49,7 @@ export class AuthService {
         this.curUser = newUser;
         localStorage.setItem('email', user.email);
         localStorage.setItem('users', JSON.stringify(this.users));
+        this.isLoadingService.remove();
         this.router.navigate(['/posts']);
       })
       .catch(error => {
@@ -54,6 +58,7 @@ export class AuthService {
   }
 
   createUser(user) {
+    this.isLoadingService.add();
     this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password)
       .then(userCredential => {
         this.curUser = user;
@@ -62,6 +67,7 @@ export class AuthService {
         this.insertUserData(userCredential)
           .then(() => {
             localStorage.setItem('users', JSON.stringify(this.users));
+            this.isLoadingService.remove();
             this.router.navigate(['/posts']);
           });
       })

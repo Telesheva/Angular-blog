@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {AuthService} from '../../services/auth/auth.service';
+import {IsLoadingService} from '../../services/isLoading/is-loading.service';
 
 @Component({
   selector: 'app-auth',
@@ -12,8 +13,10 @@ export class AuthComponent implements OnInit, OnDestroy {
   isLogIn = false;
   authError: any;
   private eventAuthErrorSubscription;
+  loading: boolean;
+  private isLoadingSubscription;
 
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private isLoadingService: IsLoadingService) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -23,10 +26,14 @@ export class AuthComponent implements OnInit, OnDestroy {
     this.eventAuthErrorSubscription = this.auth.eventAuthError$.subscribe(data => {
       this.authError = data;
     });
+    this.isLoadingSubscription = this.isLoadingService.isLoading$.subscribe((loading: boolean) => {
+      this.loading = loading;
+    });
   }
 
   ngOnDestroy() {
     this.eventAuthErrorSubscription.unsubscribe();
+    this.isLoadingSubscription.unsubscribe();
   }
 
   createUser(form) {
