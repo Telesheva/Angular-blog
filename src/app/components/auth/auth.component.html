@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="!loading">
   <h1 style="color: white">Log in or sign up, please!</h1>
   <div class="form-block">
     <form [formGroup]="form" class="form" (ngSubmit)="isLogIn ? loginUser(form) : createUser(form)">
