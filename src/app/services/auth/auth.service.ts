@@ -14,27 +14,30 @@ export class AuthService {
 
   private eventAuthError = new BehaviorSubject<string>('');
   eventAuthError$ = this.eventAuthError.asObservable();
-  users = [];
+  users: UserInterface[];
   curUser: UserInterface;
+  adminEmail = 'admin@gmail.com';
 
   constructor(
     private afAuth: AngularFireAuth,
     private db: AngularFirestore,
     private isLoadingService: IsLoadingService,
-    private router: Router) {}
+    private router: Router
+  ) {}
 
   getUsers() {
-    this.db.collection('users')
-      .get().forEach(querySnap => {
+    const users = [];
+    this.db.collection('users').get().forEach(querySnap => {
       querySnap.forEach(doc => {
         if (doc.exists) {
-          this.users.push(doc.data());
+          users.push(doc.data());
+          this.users = users;
+          return this.users;
         }
       });
     }).catch(error => {
       this.eventAuthError.next(error);
     });
-    return this.users;
   }
 
   loginUser(user) {
@@ -42,7 +45,7 @@ export class AuthService {
     this.isLoadingService.add();
     const newUser = {
       email: user.email,
-      role: user.email === 'admin@gmail.com' ? 'admin' : 'user'
+      role: user.email === this.adminEmail ? 'admin' : 'user'
     };
     this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password)
       .then(() => {
@@ -50,7 +53,7 @@ export class AuthService {
         localStorage.setItem('email', user.email);
         localStorage.setItem('users', JSON.stringify(this.users));
         this.isLoadingService.remove();
-        this.router.navigate(['/posts']);
+        this.router.navigate(['/']);
       })
       .catch(error => {
         this.eventAuthError.next(error);
@@ -58,17 +61,21 @@ export class AuthService {
   }
 
   createUser(user) {
+    const newUser = {
+      email: user.email,
+      role: user.email === this.adminEmail ? 'admin' : 'user'
+    };
     this.isLoadingService.add();
     this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password)
       .then(userCredential => {
-        this.curUser = user;
+        this.curUser = newUser;
         localStorage.setItem('email', user.email);
 
-        this.insertUserData(userCredential)
+        this.insertUserData(newUser, userCredential)
           .then(() => {
             localStorage.setItem('users', JSON.stringify(this.users));
             this.isLoadingService.remove();
-            this.router.navigate(['/posts']);
+            this.router.navigate(['/']);
           });
       })
       .catch(error => {
@@ -76,17 +83,15 @@ export class AuthService {
       });
   }
 
-  insertUserData(userCredential: firebase.auth.UserCredential) {
+  insertUserData(user, userCredential) {
     this.getUsers();
-    if (!this.users.includes(userCredential.user)) {
-      return this.db.doc(`/users/${userCredential.user.uid}`).set({
-        email: this.curUser.email,
-        role: this.curUser.email === 'admin@gmail.com' ? 'admin' : 'user'
-      });
+    if (!this.users.includes(user)) {
+      return this.db.doc(`/users/${userCredential.user.uid}`).set(user);
     }
   }
 
   autoLogIn(user) {
+    // this.users = JSON.parse(localStorage.getItem('users'));
     if (user) {
       this.curUser = user;
     }

@@ -16,6 +16,7 @@ export class PostsListComponent implements OnInit, OnDestroy {
   loading: boolean;
   private postsSubscription;
   private isLoadingSubscription;
+  private routerLink: string;
 
   constructor(
     private router: Router,
@@ -46,7 +47,11 @@ export class PostsListComponent implements OnInit, OnDestroy {
   }
 
   onViewPostBtnClick(id: string) {
-    this.router.navigate([`/post/${id}`]);
     this.postService.fetchOnePost(id);
+  }
+
+  getLink(id: string) {
+    this.routerLink = `post/${id}`;
+    return this.routerLink;
   }
 }

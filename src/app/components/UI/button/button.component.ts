@@ -13,6 +13,7 @@ export class ButtonComponent implements OnInit {
   @Input() light: boolean;
   @Input() label: string;
   @Input() disabled: boolean;
+  @Input() routerLink: string;
 
   @Output() Click = new EventEmitter<any>();
 

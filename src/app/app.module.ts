@@ -18,17 +18,19 @@ import { PostFormComponent } from './components/post-form/post-form.component';
 import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
 import {PostComponent} from './components/post/post.component';
 import { LoaderComponent } from './components/UI/loader/loader.component';
+import {AuthModule} from './components/auth/auth.module';
+import {PostsListModule} from './components/posts-list/posts-list.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AuthComponent,
+  /*  AuthComponent,
     ButtonComponent,
+    LoaderComponent
     PostsListComponent,
     PostFormComponent,
     PageNotFoundComponent,
-    PostComponent,
-    LoaderComponent
+    PostComponent,*/
   ],
   imports: [
     BrowserModule,

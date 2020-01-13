@@ -11,7 +11,7 @@ import {PostService} from '../../services/post/post.service';
 })
 export class PostFormComponent implements OnInit {
   form: FormGroup;
-  isAddPost = this.router.url === '/posts/add';
+  isAddPost = this.router.url === '/post/add';
 
   constructor(
     private auth: AuthService,
@@ -25,6 +25,7 @@ export class PostFormComponent implements OnInit {
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required])
     });
+    console.log(this.isAddPost, this.router.url);
     if (!this.isAddPost) {
       this.form.controls.title.setValue(this.postService.post.title);
       this.form.controls.description.setValue(this.postService.post.description);

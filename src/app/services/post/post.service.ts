@@ -70,7 +70,7 @@ export class PostService {
     this.db.doc(`/posts/${ID}`).set(newPost).then(() => {
       this.posts.push(newPost);
       this.posts$.next(this.posts);
-      this.router.navigate(['/posts']);
+      this.router.navigate(['/']);
     })
       .catch(error => {
         window.alert(error);
@@ -82,7 +82,7 @@ export class PostService {
       const oldPostIndex = this.posts.findIndex(el => el.id === id);
       this.posts.splice(oldPostIndex, 1, post);
       this.posts$.next(this.posts);
-      this.router.navigate(['/posts']);
+      this.router.navigate(['/']);
     })
       .catch(error => {
         window.alert(error);

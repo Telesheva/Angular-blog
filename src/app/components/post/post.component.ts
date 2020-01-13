@@ -15,6 +15,7 @@ export class PostComponent implements OnInit {
   private post: PostInterface;
   private isAdmin = this.auth.curUser.role === 'admin';
   loading: boolean;
+  private routerLink: string;
 
   private postSubscription;
   private isLoadingSubscription;
@@ -30,6 +31,7 @@ export class PostComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
+    this.routerLink = `post/${this.id}/edit`;
     this.postService.fetchOnePost(this.id);
     this.postSubscription = this.postService.post$.subscribe((post: PostInterface) => {
       this.post = post;
@@ -37,9 +39,5 @@ export class PostComponent implements OnInit {
     this.isLoadingSubscription = this.isLoadingService.isLoading$.subscribe((loading: boolean) => {
       this.loading = loading;
     });
-  }
-
-  onEditPostBtnClick() {
-    this.router.navigate([`/posts/edit/${this.id}`]);
   }
 }

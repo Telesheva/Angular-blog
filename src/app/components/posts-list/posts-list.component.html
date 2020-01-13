@@ -2,7 +2,7 @@
   <div class="post__headline">
     <h1 style="color: #ffffff">Hello! Check out new posts!</h1>
     <div class="post__headline__btns">
-      <app-button label="Add Post" [light]="true" type="button" (Click)="router.navigate(['/posts/add'])"></app-button>
+      <app-button label="Add Post" [light]="true" type="button" routerLink="post/add"></app-button>
       <app-button label="Log out" [light]="true" type="button" (Click)="onLogOutBtnClick()"></app-button>
     </div>
   </div>
@@ -10,7 +10,7 @@
     <li class="post__list__item" *ngFor="let post of posts">
       <h3>{{ post.title }}</h3>
       <p class="post__list__item__description">{{ post.description }}</p>
-      <app-button label="View post" [primary]="true" type="button" (Click)="onViewPostBtnClick(post.id)"></app-button>
+      <app-button label="View post" [primary]="true" type="button" (Click)="onViewPostBtnClick(post.id)" [routerLink]="getLink(post.id)"></app-button>
     </li>
   </ul>
 </div>
