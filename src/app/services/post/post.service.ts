@@ -20,7 +20,8 @@ export class PostService {
     private db: AngularFirestore,
     private router: Router,
     private isLoadingService: IsLoadingService
-  ) {}
+  ) {
+  }
 
   fetchAllPosts() {
     const newPosts = [];
@@ -32,7 +33,8 @@ export class PostService {
           this.posts = newPosts;
           this.posts$.next(this.posts);
           this.isLoadingService.remove();
-        }});
+        }
+      });
     }).catch(error => {
       window.alert(error);
     });
@@ -78,14 +80,19 @@ export class PostService {
   }
 
   editPost(post: PostInterface, id: string): void {
-    this.db.doc(`/posts/${id}`).update(post).then(() => {
-      const oldPostIndex = this.posts.findIndex(el => el.id === id);
-      this.posts.splice(oldPostIndex, 1, post);
-      this.posts$.next(this.posts);
-      this.router.navigate(['/']);
-    })
-      .catch(error => {
-        window.alert(error);
-      });
+    const oldPost = this.posts.find(el => el.id === id);
+    if (oldPost.title !== post.title || oldPost.description !== post.description) {
+      this.db.doc(`/posts/${id}`).update(post).then(() => {
+        const oldPostIndex = this.posts.findIndex(el => el.id === id);
+        this.posts.splice(oldPostIndex, 1, post);
+        this.posts$.next(this.posts);
+        this.router.navigate(['/']);
+      })
+        .catch(error => {
+          window.alert(error);
+        });
+    } else {
+      window.alert('You did not change the post. Do it, please!');
+    }
   }
 }

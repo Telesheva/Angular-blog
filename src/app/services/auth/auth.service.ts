@@ -3,9 +3,9 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Router} from '@angular/router';
 import {BehaviorSubject} from 'rxjs';
-import * as firebase from 'firebase';
 import {UserInterface} from '../../interfaces/user.interface';
 import {IsLoadingService} from '../isLoading/is-loading.service';
+import {zonedTimeToUtc} from 'date-fns-tz';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,6 @@ export class AuthService {
 
   private eventAuthError = new BehaviorSubject<string>('');
   eventAuthError$ = this.eventAuthError.asObservable();
-  users: UserInterface[];
   curUser: UserInterface;
   adminEmail = 'admin@gmail.com';
 
@@ -23,25 +22,10 @@ export class AuthService {
     private db: AngularFirestore,
     private isLoadingService: IsLoadingService,
     private router: Router
-  ) {}
-
-  getUsers() {
-    const users = [];
-    this.db.collection('users').get().forEach(querySnap => {
-      querySnap.forEach(doc => {
-        if (doc.exists) {
-          users.push(doc.data());
-          this.users = users;
-          return this.users;
-        }
-      });
-    }).catch(error => {
-      this.eventAuthError.next(error);
-    });
+  ) {
   }
 
   loginUser(user) {
-    this.getUsers();
     this.isLoadingService.add();
     const newUser = {
       email: user.email,
@@ -50,8 +34,8 @@ export class AuthService {
     this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password)
       .then(() => {
         this.curUser = newUser;
-        localStorage.setItem('email', user.email);
-        localStorage.setItem('users', JSON.stringify(this.users));
+        localStorage.setItem('user', JSON.stringify(newUser));
+        this.setUserToken();
         this.isLoadingService.remove();
         this.router.navigate(['/']);
       })
@@ -69,13 +53,13 @@ export class AuthService {
     this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password)
       .then(userCredential => {
         this.curUser = newUser;
-        localStorage.setItem('email', user.email);
+        localStorage.setItem('user', JSON.stringify(newUser));
 
         this.insertUserData(newUser, userCredential)
           .then(() => {
-            localStorage.setItem('users', JSON.stringify(this.users));
             this.isLoadingService.remove();
             this.router.navigate(['/']);
+            this.setUserToken();
           });
       })
       .catch(error => {
@@ -84,16 +68,30 @@ export class AuthService {
   }
 
   insertUserData(user, userCredential) {
-    this.getUsers();
-    if (!this.users.includes(user)) {
-      return this.db.doc(`/users/${userCredential.user.uid}`).set(user);
-    }
+    return this.db.doc(`/users/${userCredential.user.uid}`).set(user);
+  }
+
+  setUserToken() {
+    this.afAuth.auth.currentUser.getIdTokenResult(true).then((idTokenResult) => {
+      localStorage.setItem('expTime', idTokenResult.expirationTime);
+      return idTokenResult;
+    });
   }
 
   autoLogIn(user) {
-    // this.users = JSON.parse(localStorage.getItem('users'));
-    if (user) {
+    const expTime = localStorage.getItem('expTime');
+    const utcExpireDate = zonedTimeToUtc(new Date(expTime), 'Europe/Kiev').getTime();
+    if (utcExpireDate <= new Date().getTime()) {
+      window.alert('Your time is over. Please, log in again.');
+      this.logout();
+    } else {
       this.curUser = user;
     }
+  }
+
+  logout() {
+    this.router.navigate(['/auth']);
+    localStorage.removeItem('expTime');
+    localStorage.removeItem('user');
   }
 }

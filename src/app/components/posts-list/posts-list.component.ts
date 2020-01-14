@@ -21,7 +21,8 @@ export class PostsListComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private postService: PostService,
-    private isLoadingService: IsLoadingService
+    private isLoadingService: IsLoadingService,
+    private auth: AuthService
   ) {
   }
 
@@ -41,9 +42,7 @@ export class PostsListComponent implements OnInit, OnDestroy {
   }
 
   onLogOutBtnClick() {
-    this.router.navigate(['/auth']);
-    localStorage.removeItem('email');
-    localStorage.removeItem('users');
+    this.auth.logout();
   }
 
   onViewPostBtnClick(id: string) {

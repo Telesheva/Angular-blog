@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {AuthService} from './services/auth/auth.service';
 import {Router} from '@angular/router';
 
@@ -8,15 +8,16 @@ import {Router} from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  constructor(private auth: AuthService, private router: Router) {
+  constructor(
+    private auth: AuthService,
+    private router: Router
+  ) {
   }
 
   @HostListener('window:load', ['$event']) loadHandler() {
-    const users = JSON.parse(localStorage.getItem('users'));
-    const userEmail = localStorage.getItem('email');
-    if (userEmail) {
-      const findUser = users.find(user => user.email === userEmail.toLowerCase());
-      this.auth.autoLogIn(findUser);
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      this.auth.autoLogIn(user);
     } else {
       this.router.navigate(['/auth']);
     }

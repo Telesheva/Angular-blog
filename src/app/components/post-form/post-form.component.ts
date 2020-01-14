@@ -25,7 +25,6 @@ export class PostFormComponent implements OnInit {
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required])
     });
-    console.log(this.isAddPost, this.router.url);
     if (!this.isAddPost) {
       this.form.controls.title.setValue(this.postService.post.title);
       this.form.controls.description.setValue(this.postService.post.description);
