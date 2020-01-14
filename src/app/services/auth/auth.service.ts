@@ -15,7 +15,7 @@ export class AuthService {
   private eventAuthError = new BehaviorSubject<string>('');
   eventAuthError$ = this.eventAuthError.asObservable();
   curUser: UserInterface;
-  adminEmail = 'admin@gmail.com';
+  adminEmail = 'admin@gmail.com';   // password for admin: 12345678
 
   constructor(
     private afAuth: AngularFireAuth,
