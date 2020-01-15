@@ -26,7 +26,6 @@ export class AuthService {
   }
 
   loginUser(user) {
-    this.isLoadingService.add();
     const newUser = {
       email: user.email,
       role: user.email === this.adminEmail ? 'admin' : 'user'
@@ -34,10 +33,16 @@ export class AuthService {
     this.afAuth.auth.signInWithEmailAndPassword(user.email, user.password)
       .then(() => {
         this.curUser = newUser;
+
         localStorage.setItem('user', JSON.stringify(newUser));
+
+        this.isLoadingService.add();
+        this.eventAuthError.next('');
         this.setUserToken();
-        this.isLoadingService.remove();
+
         this.router.navigate(['/']);
+
+        this.isLoadingService.remove();
       })
       .catch(error => {
         this.eventAuthError.next(error);
@@ -49,17 +54,20 @@ export class AuthService {
       email: user.email,
       role: user.email === this.adminEmail ? 'admin' : 'user'
     };
-    this.isLoadingService.add();
     this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password)
       .then(userCredential => {
         this.curUser = newUser;
+
+        this.isLoadingService.add();
+        this.eventAuthError.next('');
+
         localStorage.setItem('user', JSON.stringify(newUser));
 
         this.insertUserData(newUser, userCredential)
           .then(() => {
-            this.isLoadingService.remove();
-            this.router.navigate(['/']);
             this.setUserToken();
+            this.router.navigate(['/']);
+            this.isLoadingService.remove();
           });
       })
       .catch(error => {
